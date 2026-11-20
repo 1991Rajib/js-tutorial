@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JS Prep Hub | Advanced JavaScript & MNC Interview Masterclass</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="header-container">
+      <div class="brand">
+        <span class="brand-badge">JS</span>
+        <div class="brand-text">
+          <h1>JavaScript Prep Hub</h1>
+          <p class="subtitle">Advanced Concepts, Syntax, Return Types & MNC Interview Vault</p>
+        </div>
+      </div>
+
+      <!-- SEARCH BAR -->
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+        </svg>
+        <input type="text" id="searchInput" placeholder="Search topics, methods, TDZ, syntax, return types, MNCs..." aria-label="Search">
+        <button id="clearSearchBtn" class="clear-btn" title="Clear search" aria-label="Clear search" hidden>&times;</button>
+      </div>
+
+      <!-- PROGRESS & CONTROLS -->
+      <div class="header-actions">
+        <div class="progress-indicator" title="Your study progress">
+          <span class="progress-label">Progress: <strong id="progressText">0%</strong></span>
+          <div class="progress-bar-track">
+            <div class="progress-bar-fill" id="progressBar"></div>
+          </div>
+        </div>
+
+        <button id="themeToggleBtn" class="icon-btn" title="Toggle Dark/Light Mode" aria-label="Toggle theme">
+          <span class="theme-icon">🌙</span>
+        </button>
+
+        <button id="playgroundDrawerBtn" class="primary-pill-btn" title="Toggle Live Code Playground">
+          <span>⚡ Live Playground</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN TAB NAVIGATION -->
+    <nav class="main-tabs" role="tablist">
+      <button class="tab-btn active" role="tab" aria-selected="true" data-tab="advanced-topics">
+        <span class="tab-icon">📘</span> Advanced JS Concepts
+        <span class="counter-badge" id="topicsCountBadge">0</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="methods-encyclopedia">
+        <span class="tab-icon">📚</span> All JS Methods (Array, String, Object...)
+        <span class="counter-badge" id="methodsCountBadge">0</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="interview-vault">
+        <span class="tab-icon">💼</span> MNC Interview Vault
+        <span class="counter-badge" id="interviewCountBadge">0</span>
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="quick-cheatsheet">
+        <span class="tab-icon">⚡</span> Quick Matrix & Cheatsheet
+      </button>
+    </nav>
+  </header>
+
+  <!-- MAIN APP CONTAINER -->
+  <main class="app-container">
+    <!-- SIDEBAR FILTERS -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-header">
+          <h3>Filter Content</h3>
+          <button id="resetFiltersBtn" class="text-link-btn">Reset All</button>
+        </div>
+
+        <!-- CATEGORY FILTERS (For Advanced Tab) -->
+        <div id="categoryFilterGroup" class="filter-group">
+          <span class="filter-title">Topic Category</span>
+          <div class="filter-pills" id="categoryPills">
+            <!-- Dynamic Category Pills -->
+          </div>
+        </div>
+
+        <!-- METHOD DATA-TYPE FILTERS (For Methods Tab) -->
+        <div id="methodTypeFilterGroup" class="filter-group" hidden>
+          <span class="filter-title">Data Type / Object</span>
+          <div class="filter-pills" id="methodTypePills">
+            <button class="pill active" data-method-cat="all">All Methods</button>
+            <button class="pill" data-method-cat="Array">Array</button>
+            <button class="pill" data-method-cat="String">String</button>
+            <button class="pill" data-method-cat="Object">Object</button>
+            <button class="pill" data-method-cat="Promise">Promise</button>
+            <button class="pill" data-method-cat="Function">Function</button>
+            <button class="pill" data-method-cat="Map & Set">Map & Set</button>
+          </div>
+        </div>
+
+        <!-- INTERVIEW TYPE FILTERS (For Interview Tab) -->
+        <div id="interviewTypeFilterGroup" class="filter-group" hidden>
+          <span class="filter-title">Question Type</span>
+          <div class="filter-pills" id="interviewTypePills">
+            <button class="pill active" data-type="all">All Types</button>
+            <button class="pill" data-type="output">Output Tricky</button>
+            <button class="pill" data-type="polyfill">Polyfills</button>
+            <button class="pill" data-type="concept">Architecture</button>
+            <button class="pill" data-type="coding">Machine Coding</button>
+          </div>
+        </div>
+
+        <!-- COMPANY FILTERS (For Interview Tab) -->
+        <div id="companyFilterGroup" class="filter-group" hidden>
+          <span class="filter-title">Target Company (MNC)</span>
+          <div class="filter-pills" id="companyPills">
+            <button class="pill active" data-company="all">All MNCs</button>
+            <button class="pill" data-company="Google">Google</button>
+            <button class="pill" data-company="Amazon">Amazon</button>
+            <button class="pill" data-company="Microsoft">Microsoft</button>
+            <button class="pill" data-company="Meta">Meta</button>
+            <button class="pill" data-company="TCS">TCS</button>
+            <button class="pill" data-company="Infosys">Infosys</button>
+            <button class="pill" data-company="Cognizant">Cognizant</button>
+            <button class="pill" data-company="Wipro">Wipro</button>
+            <button class="pill" data-company="Accenture">Accenture</button>
+          </div>
+        </div>
+
+        <!-- DIFFICULTY FILTERS -->
+        <div class="filter-group" id="difficultyFilterGroup">
+          <span class="filter-title">Difficulty Level</span>
+          <div class="filter-pills" id="difficultyPills">
+            <button class="pill active" data-difficulty="all">All</button>
+            <button class="pill" data-difficulty="Easy">Easy</button>
+            <button class="pill" data-difficulty="Medium">Medium</button>
+            <button class="pill" data-difficulty="Hard">Hard / Senior</button>
+          </div>
+        </div>
+
+        <!-- STATUS FILTERS -->
+        <div class="filter-group">
+          <span class="filter-title">Personal Status</span>
+          <div class="filter-checkboxes">
+            <label class="checkbox-label">
+              <input type="checkbox" id="showBookmarkedOnly">
+              <span>⭐ Bookmarked Only</span>
+            </label>
+            <label class="checkbox-label">
+              <input type="checkbox" id="showUncompletedOnly">
+              <span>⏳ Needs Revision Only</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- CONTENT DISPLAY AREA -->
+    <section class="content-viewport" id="contentViewport">
+      <!-- RESULTS STATUS BAR -->
+      <div class="viewport-toolbar">
+        <div class="results-meta">
+          Showing <span id="resultsCount">0</span> items
+          <span id="activeFilterTags" class="active-filter-tags"></span>
+        </div>
+        <div class="toolbar-actions">
+          <button id="expandAllBtn" class="secondary-btn" title="Expand all cards">Expand All</button>
+          <button id="collapseAllBtn" class="secondary-btn" title="Collapse all cards">Collapse All</button>
+        </div>
+      </div>
+
+      <!-- CARD LIST (For Topics & Interview Vault) -->
+      <div class="cards-list" id="cardsContainer">
+        <!-- Rendered dynamically by app.js -->
+      </div>
+
+      <!-- METHODS ENCYCLOPEDIA VIEW (Hidden by default) -->
+      <div id="methodsView" class="methods-container" hidden>
+        <!-- Injected dynamically -->
+      </div>
+
+      <!-- CHEATSHEET VIEW (Hidden by default) -->
+      <div id="cheatsheetView" class="cheatsheet-container" hidden>
+        <!-- Injected dynamically -->
+      </div>
+    </section>
+
+    <!-- FLOATING LIVE CODE RUNNER DRAWER -->
+    <aside class="playground-drawer" id="playgroundDrawer">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span class="terminal-dot red"></span>
+          <span class="terminal-dot yellow"></span>
+          <span class="terminal-dot green"></span>
+          <h3>Live JavaScript Playground</h3>
+        </div>
+        <div class="drawer-actions">
+          <span class="shortcut-tip">Tip: Press <code>Cmd/Ctrl + Enter</code> to run</span>
+          <button id="runCodeBtn" class="run-btn" title="Execute Code in Sandbox">▶ Run Code</button>
+          <button id="clearConsoleBtn" class="secondary-btn" title="Clear Console Log">Clear</button>
+          <button id="closeDrawerBtn" class="icon-btn" title="Close Playground" aria-label="Close">&times;</button>
+        </div>
+      </div>
+
+      <div class="playground-body">
+        <div class="editor-pane">
+          <div class="pane-label">Editor (JavaScript ESNext)</div>
+          <textarea id="codeEditor" spellcheck="false" placeholder="// Write or paste JavaScript code here...&#10;console.log('Hello from JS Prep Hub!');"></textarea>
+        </div>
+        <div class="console-pane">
+          <div class="pane-label">Console Output & Return Inspection</div>
+          <div class="console-output" id="consoleOutput">
+            <div class="console-line info">// Console output will appear here. Press 'Run Code' or 'Try in Playground' on any card.</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </main>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- SCRIPT INCLUSION -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
